@@ -39,7 +39,7 @@
             margin-bottom: 25px;
         }
         .header img {
-            max-height: 120px;
+            max-height: 160px;
             margin-bottom: 10px;
         }
         .header h1 {
@@ -148,11 +148,24 @@
         .ref-table td:last-child { font-weight: bold; color: white; background-color: var(--bk-red); }
         .toggle-btn { background: none; border: none; color: var(--bk-blue); text-decoration: underline; cursor: pointer; padding: 0; font-size: 13px; font-style: italic; font-weight: bold; }
         .toggle-btn:hover { color: var(--bk-red); }
+        
+        /* Bảng điểm chuẩn */
         .diem-chuan-container { max-height: 400px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; margin-top: 10px; }
-        .diem-chuan-table th { position: sticky; top: 0; z-index: 1; }
+        .diem-chuan-table th { position: sticky; top: 0; z-index: 1; background-color: var(--bk-blue); color: white;}
+        /* Căn trái tên ngành, toàn bộ chữ trong bảng màu đen in đậm */
+        .diem-chuan-table td { font-weight: bold; color: #000; }
         .diem-chuan-table td:nth-child(2) { text-align: left; }
-        .diem-chuan-table td:last-child { font-weight: bold; color: var(--bk-red); }
-        .group-header { background-color: #f0f0f0; font-weight: bold; text-align: left !important; color: var(--bk-red); }
+        /* Nền trắng xám xen kẽ */
+        .diem-chuan-table tr:nth-child(even) { background-color: #f9f9f9; }
+        /* Style khung tên chương trình đỏ, chữ trắng, in đậm, căn giữa */
+        .group-header { 
+            background-color: var(--bk-red) !important; 
+            color: white !important; 
+            font-weight: bold; 
+            text-align: center !important; 
+            text-transform: uppercase; 
+        }
+        
         .link-tuyen-sinh { display: inline-block; background-color: #e6f0ff; color: var(--bk-blue); padding: 10px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-bottom: 15px; border: 1px solid var(--bk-blue); transition: 0.3s; }
         .link-tuyen-sinh:hover { background-color: var(--bk-blue); color: white; }
     </style>
@@ -161,7 +174,7 @@
 
 <div class="container">
     <div class="header">
-        <img src="https://hcmut.edu.vn/img/nhanDienThuongHieu/01_logobk_mau.png" alt="Logo HCMUT">
+        <img src="https://hcmut.edu.vn/img/nhanDienThuongHieu/01_logobachkhoasang.png" alt="Logo HCMUT">
         <h1>Tính Điểm Xét Tuyển Tổng Hợp 2026</h1>
         <p>Áp dụng cho cả Đối tượng 2.1 & 2.2</p>
     </div>
@@ -356,7 +369,7 @@
                         <tr>
                             <th style="width: 15%;">Mã ngành</th>
                             <th>Tên ngành/ Chương trình</th>
-                            <th style="width: 20%;">Điểm Chuẩn</th>
+                            <th style="width: 20%;">Điểm Chuẩn (Thang 100)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -386,8 +399,9 @@
                         <tr><td>153</td><td>Quản trị kinh doanh</td><td>71.24</td></tr>
                         <tr><td>125</td><td>Tài nguyên và Môi trường</td><td>60.93</td></tr>
 
-                        <tr><td colspan="3" class="group-header">CHƯƠNG TRÌNH TIÊN TIẾN & DẠY BẰNG TIẾNG ANH</td></tr>
+                        <tr><td colspan="3" class="group-header">CHƯƠNG TRÌNH TIÊN TIẾN (GIẢNG DẠY BẰNG TIẾNG ANH)</td></tr>
                         <tr><td>208</td><td>Kỹ thuật Điện - Điện tử</td><td>79.50</td></tr>
+                        <tr><td colspan="3" class="group-header">CHƯƠNG TRÌNH DẠY VÀ HỌC BẰNG TIẾNG ANH</td></tr>
                         <tr><td>206</td><td>Khoa học Máy tính</td><td>83.74</td></tr>
                         <tr><td>207</td><td>Kỹ thuật Máy tính</td><td>78.66</td></tr>
                         <tr><td>258</td><td>Thiết kế Vi mạch</td><td>83.09</td></tr>
