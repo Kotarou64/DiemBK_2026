@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính Điểm Xét Tuyển Bách Khoa 2026</title>
+    <style>
+        :root {
+            --bk-blue: #003399;
+            --bk-red: #cc0000;
+            --bg-light: #f4f7f6;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #001f5c, var(--bk-blue));
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .container {
+            background-color: #ffffff;
+            max-width: 800px;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            padding: 30px;
+            box-sizing: border-box;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid var(--bk-blue);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        .header img {
+            max-height: 80px;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            color: var(--bk-blue);
+            margin: 0;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+        .header p {
+            color: var(--bk-red);
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .section {
+            background-color: var(--bg-light);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--bk-blue);
+        }
+        .section-title {
+            font-weight: bold;
+            color: var(--bk-blue);
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        input[type="number"], input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--bk-blue);
+            box-shadow: 0 0 5px rgba(0, 51, 153, 0.3);
+        }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th { background-color: var(--bk-blue); color: white; font-size: 14px; }
+        td input { width: 100%; text-align: center; }
+        
+        .btn-calc {
+            width: 100%;
+            background-color: var(--bk-red);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background 0.3s;
+        }
+        .btn-calc:hover { background-color: #a30000; }
+        
+        .result-box {
+            margin-top: 25px;
+            background-color: #e6f0ff;
+            border: 2px dashed var(--bk-blue);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+        .result-title { font-size: 20px; font-weight: bold; color: var(--bk-blue); }
+        .result-score { font-size: 36px; font-weight: bold; color: var(--bk-red); margin: 10px 0; }
+        .result-details { font-size: 14px; color: #555; text-align: left; margin-top: 15px; line-height: 1.6; }
+        .text-red { color: var(--bk-red); font-weight: bold; }
+        .text-blue { color: var(--bk-blue); font-weight: bold; }
+
+        /* Style cho bảng tra cứu IELTS */
+        .ref-table {
+            font-size: 12px;
+            background-color: white;
+            margin-top: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .ref-table th { background-color: #004080; padding: 6px; }
+        .ref-table td { padding: 6px; }
+        .ref-table td:last-child { font-weight: bold; color: white; background-color: var(--bk-red); }
+        .toggle-btn {
+            background: none; border: none; color: var(--bk-blue);
+            text-decoration: underline; cursor: pointer; padding: 0;
+            font-size: 13px; font-style: italic; font-weight: bold;
+        }
+        .toggle-btn:hover { color: var(--bk-red); }
+
+        /* Bảng điểm chuẩn 2025 */
+        .diem-chuan-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .diem-chuan-table th { position: sticky; top: 0; z-index: 1; }
+        .diem-chuan-table td:nth-child(2) { text-align: left; }
+        .diem-chuan-table td:last-child { font-weight: bold; color: var(--bk-red); }
+        .group-header { background-color: #f0f0f0; font-weight: bold; text-align: left !important; color: var(--bk-red); }
+        .link-tuyen-sinh {
+            display: inline-block;
+            background-color: #e6f0ff;
+            color: var(--bk-blue);
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border: 1px solid var(--bk-blue);
+            transition: 0.3s;
+        }
+        .link-tuyen-sinh:hover { background-color: var(--bk-blue); color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img src="C:\Users\ADMIN\Downloads\01_logobachkhoasang.png" alt="Logo HCMUT">
+        <h1>Tính Điểm Xét Tuyển Tổng Hợp 2026</h1>
+        <p>Áp dụng cho cả Đối tượng 2.1 & 2.2</p>
+    </div>
+
+    <div style="text-align: center;">
+        <a href="https://hcmut.edu.vn/tuyen-sinh/dai-hoc-chinh-quy/gioi-thieu-chung" target="_blank" class="link-tuyen-sinh">
+            🔗 Bấm vào đây để xem chi tiết các ngành và Tổ hợp xét tuyển 2026
+        </a>
+    </div>
+
+    <div class="section" style="border-left-color: var(--bk-red);">
+        <div class="section-title" style="color: var(--bk-red);">CHỌN ĐỐI TƯỢNG XÉT TUYỂN</div>
+        <div class="form-group">
+            <select id="doi_tuong" onchange="toggleDGNL()">
+                <option value="2.1">Đối tượng 2.1: CÓ điểm thi Đánh giá Năng lực (ĐGNL)</option>
+                <option value="2.2">Đối tượng 2.2: KHÔNG CÓ điểm thi Đánh giá Năng lực</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">1. CHỌN TỔ HỢP MÔN XÉT TUYỂN</div>
+        <p style="font-size: 13px; color: #666; margin-top: 0;">* Môn 1 mặc định là Toán (Hệ số 2 theo quy định).</p>
+        <div class="grid-2">
+            <div class="form-group">
+                <label>Môn 2</label>
+                <select id="subject2Name">
+                    <option value="Vật lý">Vật lý</option>
+                    <option value="Hóa học">Hóa học</option>
+                    <option value="Tiếng Anh">Tiếng Anh</option>
+                    <option value="Tin học">Tin học</option>
+                    <option value="Công nghệ công nghiệp">Công nghệ Công nghiệp</option>
+                    <option value="Sinh học">Sinh học</option>
+                    <option value="Ngữ văn">Ngữ văn</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Môn 3</label>
+                <select id="subject3Name">
+                    <option value="Hóa học">Hóa học</option>
+                    <option value="Vật lý">Vật lý</option>
+                    <option value="Tiếng Anh">Tiếng Anh</option>
+                    <option value="Tin học">Tin học</option>
+                    <option value="Công nghệ công nghiệp">Công nghệ Công nghiệp</option>
+                    <option value="Sinh học">Sinh học</option>
+                    <option value="Ngữ văn">Ngữ văn</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="dgnl_section">
+        <div class="section-title">2. ĐIỂM ĐÁNH GIÁ NĂNG LỰC (ĐGNL)</div>
+        <div class="grid-2">
+            <div class="form-group">
+                <label>Tổng điểm bài thi ĐGNL (Tối đa 1200)</label>
+                <input type="number" id="dgnl_total" placeholder="VD: 950" step="0.1" min="0" max="1200">
+            </div>
+            <div class="form-group">
+                <label>Điểm thành phần môn TOÁN ĐGNL (Tối đa 300)</label>
+                <input type="number" id="dgnl_math" placeholder="VD: 250" step="0.1" min="0" max="300">
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">3. ĐIỂM THI TỐT NGHIỆP THPT 2026</div>
+        <p style="font-size: 13px; color: #666; margin-top: 0;">Lưu ý: Nhập điểm quy đổi nếu dùng chứng chỉ ngoại ngữ. 
+            <button class="toggle-btn" onclick="toggleTable('bangQuyDoi')">[ Xem/Ẩn bảng quy đổi ]</button>
+        </p>
+
+        <div id="bangQuyDoi" style="display: none; overflow-x: auto;">
+            <table class="ref-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">IELTS<br>(Academic)</th>
+                        <th rowspan="2">PTE<br>(Academic)</th>
+                        <th rowspan="2">TOEFL iBT</th>
+                        <th colspan="2">TOEIC</th>
+                        <th rowspan="2">Điểm Môn<br>Tiếng Anh</th>
+                    </tr>
+                    <tr>
+                        <th>Nghe & Đọc</th>
+                        <th>Nói & Viết</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>≥ 8.0</td><td>≥ 79</td><td>≥ 110</td><td>≥ 905</td><td>≥ 390</td><td>10.0</td></tr>
+                    <tr><td>7.5</td><td>71 - 78</td><td>102 - 109</td><td>835 - 900</td><td>380 - 389</td><td>9.5</td></tr>
+                    <tr><td>7.0</td><td>63 - 70</td><td>94 - 101</td><td>785 - 830</td><td>360 - 379</td><td>9.0</td></tr>
+                    <tr><td>6.5</td><td>55 - 62</td><td>79 - 93</td><td>685 - 780</td><td>330 - 359</td><td>8.5</td></tr>
+                    <tr><td>6.0</td><td>47 - 54</td><td>60 - 78</td><td>570 - 680</td><td>310 - 329</td><td>8.0</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="grid-3" style="margin-top: 15px;">
+            <div class="form-group">
+                <label>Môn Toán <span class="text-red">(x2)</span></label>
+                <input type="number" id="thpt_math" placeholder="VD: 8.5" step="0.01" min="0" max="10">
+            </div>
+            <div class="form-group">
+                <label>Môn 2 (<span id="lbl_thpt_m2">Vật lý</span>)</label>
+                <input type="number" id="thpt_m2" placeholder="VD: 8.0" step="0.01" min="0" max="10">
+            </div>
+            <div class="form-group">
+                <label>Môn 3 (<span id="lbl_thpt_m3">Hóa học</span>)</label>
+                <input type="number" id="thpt_m3" placeholder="VD: 8.0" step="0.01" min="0" max="10">
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">4. ĐIỂM TRUNG BÌNH HỌC BẠ THPT</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Môn học</th>
+                    <th>Lớp 10</th>
+                    <th>Lớp 11</th>
+                    <th>Lớp 12</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Toán <span class="text-red">(x2)</span></strong></td>
+                    <td><input type="number" id="hb_math_10" step="0.01" min="0" max="10"></td>
+                    <td><input type="number" id="hb_math_11" step="0.01" min="0" max="10"></td>
+                    <td><input type="number" id="hb_math_12" step="0.01" min="0" max="10"></td>
+                </tr>
+                <tr>
+                    <td><strong id="lbl_hb_m2">Vật lý</strong></td>
+                    <td><input type="number" id="hb_m2_10" step="0.01" min="0" max="10"></td>
+                    <td><input type="number" id="hb_m2_11" step="0.01" min="0" max="10"></td>
+                    <td><input type="number" id="hb_m2_12" step="0.01" min="0" max="10"></td>
+                </tr>
+                <tr>
+                    <td><strong id="lbl_hb_m3">Hóa học</strong></td>
+                    <td><input type="number" id="hb_m3_10" step="0.01" min="0" max="10"></td>
+                    <td><input type="number" id="hb_m3_11" step="0.01" min="0" max="10"></td>
+                    <td><input type="number" id="hb_m3_12" step="0.01" min="0" max="10"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-title">5. ĐIỂM CỘNG & ƯU TIÊN (Nếu có)</div>
+        <div class="grid-2">
+            <div class="form-group">
+                <label>Điểm cộng thành tích </label>
+                <input type="number" id="diem_cong_tt" value="0" step="0.01" min="0">
+            </div>
+            <div class="form-group">
+                <label>Điểm ưu tiên khu vực/đối tượng</label>
+                <input type="number" id="diem_uu_tien_raw" value="0" step="0.01" min="0" max="30">
+            </div>
+        </div>
+    </div>
+
+    <button class="btn-calc" onclick="calculateScore()">TÍNH ĐIỂM XÉT TUYỂN</button>
+
+    <div class="result-box" id="resultBox">
+        <div class="result-title">TỔNG ĐIỂM XÉT TUYỂN CỦA BẠN</div>
+        <div class="result-score" id="finalScore">0.00</div>
+        <div class="result-details" id="resultDetails"></div>
+    </div>
+
+    <div class="section" style="margin-top: 30px; border-left-color: #666;">
+        <div class="section-title" style="color: #333;">
+            ĐIỂM CHUẨN THAM KHẢO NĂM 2025
+            <button class="toggle-btn" style="color: #666;" onclick="toggleTable('bangDiemChuan')">[ Xem/Ẩn bảng ]</button>
+        </div>
+        <div id="bangDiemChuan" style="display: none;">
+            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="🔍 Nhập mã ngành hoặc tên ngành để tìm kiếm nhanh..." style="margin-bottom: 10px;">
+            <div class="diem-chuan-container">
+                <table class="diem-chuan-table" id="myTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Mã ngành</th>
+                            <th>Tên ngành/ Chương trình</th>
+                            <th style="width: 20%;">Điểm Chuẩn</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="3" class="group-header">CHƯƠNG TRÌNH TIÊU CHUẨN</td></tr>
+                        <tr><td>106</td><td>Khoa học Máy tính</td><td>85.41</td></tr>
+                        <tr><td>107</td><td>Kỹ thuật Máy tính</td><td>82.91</td></tr>
+                        <tr><td>108</td><td>Nhóm ngành Điện - Điện tử - Viễn thông...</td><td>80.77</td></tr>
+                        <tr><td>109</td><td>Kỹ thuật Cơ khí</td><td>75.43</td></tr>
+                        <tr><td>110</td><td>Kỹ thuật Cơ điện tử</td><td>81.82</td></tr>
+                        <tr><td>112</td><td>Nhóm ngành Dệt - May</td><td>60.75</td></tr>
+                        <tr><td>128</td><td>Logistics và Hệ thống Công nghiệp</td><td>80.52</td></tr>
+                        <tr><td>140</td><td>Kỹ thuật Nhiệt</td><td>73.50</td></tr>
+                        <tr><td>141</td><td>Bảo dưỡng Công nghiệp</td><td>65.59</td></tr>
+                        <tr><td>114</td><td>Nhóm ngành Hóa - Thực phẩm - Sinh học</td><td>75.43</td></tr>
+                        <tr><td>115</td><td>Nhóm ngành Xây dựng và Quản lý Dự án</td><td>55.05</td></tr>
+                        <tr><td>117</td><td>Kiến trúc</td><td>67.42</td></tr>
+                        <tr><td>148</td><td>Kinh tế Xây dựng</td><td>55.72</td></tr>
+                        <tr><td>120</td><td>Nhóm ngành Dầu khí - Địa chất</td><td>60.00</td></tr>
+                        <tr><td>147</td><td>Địa Kỹ thuật Xây dựng</td><td>55.06</td></tr>
+                        <tr><td>129</td><td>Kỹ thuật Vật liệu</td><td>71.10</td></tr>
+                        <tr><td>137</td><td>Vật lý Kỹ thuật</td><td>76.61</td></tr>
+                        <tr><td>138</td><td>Cơ Kỹ thuật</td><td>75.98</td></tr>
+                        <tr><td>146</td><td>Khoa học Dữ liệu</td><td>83.85</td></tr>
+                        <tr><td>142</td><td>Kỹ thuật Ô tô</td><td>76.34</td></tr>
+                        <tr><td>145</td><td>(Song ngành) Tàu thủy - Hàng không</td><td>76.63</td></tr>
+                        <tr><td>123</td><td>Quản lý Công nghiệp</td><td>75.98</td></tr>
+                        <tr><td>153</td><td>Quản trị kinh doanh</td><td>71.24</td></tr>
+                        <tr><td>125</td><td>Tài nguyên và Môi trường</td><td>60.93</td></tr>
+
+                        <tr><td colspan="3" class="group-header">CHƯƠNG TRÌNH TIÊN TIẾN & DẠY BẰNG TIẾNG ANH</td></tr>
+                        <tr><td>208</td><td>Kỹ thuật Điện - Điện tử</td><td>79.50</td></tr>
+                        <tr><td>206</td><td>Khoa học Máy tính</td><td>83.74</td></tr>
+                        <tr><td>207</td><td>Kỹ thuật Máy tính</td><td>78.66</td></tr>
+                        <tr><td>258</td><td>Thiết kế Vi mạch</td><td>83.09</td></tr>
+                        <tr><td>257</td><td>Năng lượng Tái tạo</td><td>58.07</td></tr>
+                        <tr><td>209</td><td>Kỹ thuật Cơ khí</td><td>74.30</td></tr>
+                        <tr><td>210</td><td>Kỹ thuật Cơ Điện tử</td><td>78.44</td></tr>
+                        <tr><td>211</td><td>Kỹ thuật Robot</td><td>73.89</td></tr>
+                        <tr><td>214</td><td>Kỹ thuật Hóa học</td><td>63.30</td></tr>
+                        <tr><td>218</td><td>Công nghệ Sinh học</td><td>66.13</td></tr>
+                        <tr><td>254</td><td>Công nghệ Sinh học số</td><td>56.42</td></tr>
+                        <tr><td>219</td><td>Công nghệ Thực phẩm</td><td>59.21</td></tr>
+                        <tr><td>215</td><td>Nhóm ngành Quản lý DA Xây dựng và Kỹ thuật XD</td><td>56.20</td></tr>
+                        <tr><td>217</td><td>Kiến trúc Cảnh quan</td><td>55.45</td></tr>
+                        <tr><td>220</td><td>Kỹ thuật Dầu khí</td><td>60.25</td></tr>
+                        <tr><td>223</td><td>Quản lý Công nghiệp</td><td>61.08</td></tr>
+                        <tr><td>253</td><td>Kinh doanh số</td><td>59.06</td></tr>
+                        <tr><td>225</td><td>Tài nguyên và Môi trường</td><td>55.46</td></tr>
+                        <tr><td>255</td><td>Kinh tế Tuần hoàn</td><td>64.38</td></tr>
+                        <tr><td>228</td><td>Logistics và Hệ thống Công nghiệp</td><td>73.05</td></tr>
+                        <tr><td>229</td><td>Kỹ thuật Vật liệu Công nghệ cao</td><td>55.23</td></tr>
+                        <tr><td>237</td><td>Kỹ thuật Y sinh</td><td>64.74</td></tr>
+                        <tr><td>242</td><td>Kỹ thuật Ô tô</td><td>69.49</td></tr>
+                        <tr><td>245</td><td>Kỹ thuật Hàng không</td><td>78.79</td></tr>
+
+                        <tr><td colspan="3" class="group-header">CHƯƠNG TRÌNH ĐỊNH HƯỚNG NHẬT BẢN / QUỐC TẾ</td></tr>
+                        <tr><td>266</td><td>Khoa học Máy tính (ĐH Nhật Bản)</td><td>77.05</td></tr>
+                        <tr><td>268</td><td>Cơ Kỹ thuật (ĐH Nhật Bản)</td><td>69.40</td></tr>
+                        <tr><td>306</td><td>Khoa học Máy tính | Úc, New Zealand, Mỹ</td><td>72.90</td></tr>
+                        <tr><td>307</td><td>Kỹ thuật Máy tính | Úc, New Zealand</td><td>67.68</td></tr>
+                        <tr><td>308</td><td>Kỹ thuật Điện - Điện tử | Úc, Hàn Quốc</td><td>65.52</td></tr>
+                        <tr><td>309</td><td>Kỹ thuật Cơ khí | Mỹ, Úc</td><td>74.30</td></tr>
+                        <tr><td>310</td><td>Kỹ thuật Cơ Điện tử | Mỹ, Úc</td><td>78.44</td></tr>
+                        <tr><td>314</td><td>Kỹ thuật Hóa học | Úc</td><td>63.30</td></tr>
+                        <tr><td>315</td><td>Kỹ thuật Xây dựng | Úc</td><td>56.20</td></tr>
+                        <tr><td>319</td><td>Công nghệ Thực phẩm | New Zealand</td><td>56.20</td></tr>
+                        <tr><td>323</td><td>Quản lý Công nghiệp | Úc</td><td>61.08</td></tr>
+                        <tr><td>325</td><td>KT Môi trường, QL Tài nguyên & Môi trường | Úc</td><td>55.46</td></tr>
+                        <tr><td>342</td><td>Kỹ thuật Ô tô | Úc</td><td>69.49</td></tr>
+                        <tr><td>345</td><td>Kỹ thuật Hàng không | Úc</td><td>78.79</td></tr>
+                        <tr><td>406</td><td>Trí tuệ Nhân tạo - ĐH Công nghệ Sydney (Úc)</td><td>65.50</td></tr>
+                        <tr><td>416</td><td>Công nghệ Thông tin - ĐH Công nghệ Sydney (Úc)</td><td>57.38</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleDGNL() {
+        let isDT21 = document.getElementById('doi_tuong').value === "2.1";
+        document.getElementById('dgnl_section').style.display = isDT21 ? 'block' : 'none';
+    }
+
+    // Toggle chung cho các bảng ẩn hiện
+    function toggleTable(id) {
+        let bang = document.getElementById(id);
+        bang.style.display = bang.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Cập nhật tên môn
+    document.getElementById('subject2Name').addEventListener('change', function() {
+        document.getElementById('lbl_thpt_m2').innerText = this.value;
+        document.getElementById('lbl_hb_m2').innerText = this.value;
+    });
+    document.getElementById('subject3Name').addEventListener('change', function() {
+        document.getElementById('lbl_thpt_m3').innerText = this.value;
+        document.getElementById('lbl_hb_m3').innerText = this.value;
+    });
+
+    // Hàm tìm kiếm trong bảng điểm chuẩn
+    function searchTable() {
+        let input, filter, table, tr, td1, td2, i, txtValue1, txtValue2;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 1; i < tr.length; i++) {
+            // Bỏ qua các hàng tiêu đề nhóm (có colspan=3)
+            if (tr[i].getElementsByTagName("td")[0].hasAttribute("colspan")) continue;
+
+            td1 = tr[i].getElementsByTagName("td")[0]; // Cột mã ngành
+            td2 = tr[i].getElementsByTagName("td")[1]; // Cột tên ngành
+            
+            if (td1 || td2) {
+                txtValue1 = td1.textContent || td1.innerText;
+                txtValue2 = td2.textContent || td2.innerText;
+                if (txtValue1.toUpperCase().indexOf(filter) > -1 || txtValue2.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }       
+        }
+    }
+
+    function round01(num) {
+        return Math.round(num * 100) / 100;
+    }
+
+    function getVal(id) {
+        let val = parseFloat(document.getElementById(id).value);
+        return isNaN(val) ? 0 : val;
+    }
+
+    function calculateScore() {
+        let isDT21 = document.getElementById('doi_tuong').value === "2.1";
+
+        let thpt_math = getVal('thpt_math');
+        let thpt_m2 = getVal('thpt_m2');
+        let thpt_m3 = getVal('thpt_m3');
+        let score_thpt = round01(((thpt_math * 2 + thpt_m2 + thpt_m3) / 4) * 10);
+
+        let score_dgnl = 0;
+        if (isDT21) {
+            let dgnl_total = getVal('dgnl_total');
+            let dgnl_math = getVal('dgnl_math');
+            score_dgnl = round01((dgnl_total + dgnl_math) / 15);
+        } else {
+            score_dgnl = round01(score_thpt * 0.75);
+        }
+
+        let hb_math = (getVal('hb_math_10') + getVal('hb_math_11') + getVal('hb_math_12')) / 3;
+        let hb_m2 = (getVal('hb_m2_10') + getVal('hb_m2_11') + getVal('hb_m2_12')) / 3;
+        let hb_m3 = (getVal('hb_m3_10') + getVal('hb_m3_11') + getVal('hb_m3_12')) / 3;
+        let score_hb = round01(((hb_math * 2 + hb_m2 + hb_m3) / 4) * 10);
+
+        let score_hocluc = round01((score_dgnl * 0.7) + (score_thpt * 0.2) + (score_hb * 0.1));
+
+        let diem_cong_tt = getVal('diem_cong_tt');
+        let diem_cong_chinh_thuc = 0;
+        if (score_hocluc + diem_cong_tt < 100) {
+            diem_cong_chinh_thuc = diem_cong_tt;
+        } else {
+            diem_cong_chinh_thuc = 100 - score_hocluc;
+        }
+
+        let diem_uu_tien_raw = getVal('diem_uu_tien_raw');
+        let uu_tien_qd = diem_uu_tien_raw / 3 * 10;
+        let diem_uu_tien_final = 0;
+        let tong_hocluc_cong = score_hocluc + diem_cong_chinh_thuc;
+
+        if (tong_hocluc_cong < 75) {
+            diem_uu_tien_final = round01(uu_tien_qd);
+        } else {
+            diem_uu_tien_final = round01(((100 - tong_hocluc_cong) / 25) * uu_tien_qd);
+        }
+
+        let final_score = round01(score_hocluc + diem_cong_chinh_thuc + diem_uu_tien_final);
+
+        document.getElementById('finalScore').innerText = final_score.toFixed(2);
+        
+        let dgnl_text = isDT21 ? 
+            `- [Điểm năng lực] quy đổi = <strong>${score_dgnl.toFixed(2)}</strong><br>` : 
+            `- [Điểm năng lực] (Cho ĐT 2.2) = ${score_thpt.toFixed(2)} x 0.75 = <strong>${score_dgnl.toFixed(2)}</strong><br>`;
+
+        let details = `
+            <strong>1. Chi tiết các thành tố học lực:</strong><br>
+            ${dgnl_text}
+            - [Điểm TNTHPT] quy đổi = <strong>${score_thpt.toFixed(2)}</strong><br>
+            - [Điểm học THPT] quy đổi = <strong>${score_hb.toFixed(2)}</strong><br>
+            - <strong>[Điểm học lực]</strong> = (${score_dgnl.toFixed(2)} x 70%) + (${score_thpt.toFixed(2)} x 20%) + (${score_hb.toFixed(2)} x 10%) = <strong class="text-blue">${score_hocluc.toFixed(2)}</strong><br><br>
+            
+            <strong>2. Áp dụng giới hạn Điểm cộng & Điểm ưu tiên:</strong><br>
+            - <strong>[Điểm cộng thành tích]</strong>: Nhập ${diem_cong_tt.toFixed(2)} -> Cộng chính thức: <strong>${diem_cong_chinh_thuc.toFixed(2)}</strong> <em>(Do giới hạn tổng học lực + điểm cộng không vượt 100)</em>.<br>
+            - <strong>[Điểm ưu tiên]</strong>: Nhập ${diem_uu_tien_raw.toFixed(2)} (Thang 30) -> Quy đổi thang 100: ${uu_tien_qd.toFixed(2)}. Do điểm của bạn >= 75 nên điểm ưu tiên giảm dần còn: <strong>${diem_uu_tien_final.toFixed(2)}</strong>.<br><br>
+            
+            <strong>=> [ĐIỂM XÉT TUYỂN]</strong> = ${score_hocluc.toFixed(2)} + ${diem_cong_chinh_thuc.toFixed(2)} + ${diem_uu_tien_final.toFixed(2)} = <strong class="text-red" style="font-size:1.2em;">${final_score.toFixed(2)}</strong>
+        `;
+        document.getElementById('resultDetails').innerHTML = details;
+        document.getElementById('resultBox').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
